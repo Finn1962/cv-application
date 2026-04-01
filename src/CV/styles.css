@@ -1,0 +1,85 @@
+:root {
+  --cv-font: "Inter", sans-serif;
+  --font-size: 16px;
+  --heading-size: 40px;
+  --color-section-heading: #686868;
+}
+
+.horizontal-alignment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.horizontal-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+}
+
+.cv-content-container {
+  width: 100%;
+  height: auto;
+  max-width: 1000px;
+  min-height: 1414px;
+  aspect-ratio: 210 / 297;
+}
+
+.cv-content-container * {
+  font-family: var(--cv-font);
+  font-weight: 300;
+}
+
+.cv-header {
+  min-height: 50px;
+  height: auto;
+  background-color: black;
+  padding: 20px 10px 35px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cv-header h2 {
+  color: white;
+  font-size: var(--heading-size);
+  margin-bottom: 10px;
+}
+
+.cv-header p,
+.cv-header span {
+  color: white;
+  font-size: var(--font-size);
+}
+
+.cv-header > div {
+  gap: 23px;
+}
+
+section {
+  margin: 75px 50px;
+}
+
+section h3 {
+  font-size: var(--font-size);
+  color: var(--color-section-heading);
+}
+
+section hr {
+  border: none;
+  background-color: var(--color-section-heading);
+  height: 2px;
+  transform: translateY(12px);
+  margin-left: 30px;
+}
+
+section .data-parent-container {
+  margin-top: 50px;
+}
+
+section .data-container {
+  display: grid;
+  grid-template-columns: 35% 1fr;
+  margin: 20px 0;
+}
