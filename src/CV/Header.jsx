@@ -1,15 +1,25 @@
-export default function Header() {
+export default function Header({ data }) {
   return (
-    <header className="cv-header">
-      <h2>Finn Schmidt</h2>
+    <header className="cv-header" tabIndex="0">
+      <h2>
+        {data.firstName || "Max"} {data.lastName || "Mustermann"}
+      </h2>
+
       <div className="horizontal-alignment">
-        <p>Maurerweg 24</p>
-        <span ariaHidden="true">•</span>
-        <p>38126 Braunschweig</p>
-        <span ariaHidden="true">•</span>
-        <p>0162/9794940</p>
-        <span ariaHidden="true">•</span>
-        <p>finn.arvid@outlook.de</p>
+        <p>
+          {data.streetName || "Musterstraße"} {data.houseNumber || "38"}
+        </p>
+        <span aria-hidden="true">•</span>
+
+        <p>
+          {data.postalCode || "52310"} {data.cityName || "Musterstadt"}
+        </p>
+        <span aria-hidden="true">•</span>
+
+        <p>{data.phoneNumber || "+49 80 485 9044"}</p>
+        <span aria-hidden="true">•</span>
+
+        <p>{data.emailAdress || "max.mustermann@gmail.com"}</p>
       </div>
     </header>
   );

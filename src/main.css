@@ -1,0 +1,66 @@
+html {
+  font-size: 100%;
+  font-family: "Roboto", sans-serif;
+}
+
+html * {
+  font-weight: 400;
+}
+
+:focus {
+  outline-offset: 10px;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+}
+
+input {
+  background: #f4f4f4;
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  padding: 10px;
+}
+
+input:focus {
+  outline-offset: 0px;
+  outline-color: black;
+}
+
+input::placeholder {
+  color: rgb(88, 88, 88);
+}
+
+textarea {
+  background: #f4f4f4;
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  padding: 10px;
+}
+
+textarea:focus {
+  outline-offset: 0px;
+  outline-color: black;
+}
+
+textarea::placeholder {
+  color: rgb(88, 88, 88);
+}
+
+.page-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  padding: 50px 20px 0 20px;
+  max-width: 1500px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}

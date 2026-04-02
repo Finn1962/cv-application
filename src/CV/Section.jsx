@@ -1,15 +1,20 @@
-export default function Section() {
+export default function Section({ data }) {
   return (
-    <section>
+    <section tabIndex="0">
       <div className="horizontal-grid">
         <h3>Persönliche Daten</h3>
         <hr />
       </div>
       <div className="data-parent-container">
-        <Data meta="Name" details="Finn Schmidt" />
-        <Data meta="Geburtsdatum" details="01.06.2004" />
-        <Data meta="Geburtsort" details="Braunschweig" />
-        <Data meta="Familienstand" details="Ledig" />
+        {data.map((dataElement) => {
+          return (
+            <Data
+              meta={dataElement.meta}
+              details={dataElement.details}
+              key={dataElement.key}
+            />
+          );
+        })}
       </div>
     </section>
   );
