@@ -1,12 +1,13 @@
-export default function Section({ data }) {
+export default function Section({ data, onClick, className }) {
   return (
-    <section tabIndex="0">
+    <section tabIndex="0" onClick={onClick} className={className}>
       <div className="horizontal-grid">
-        <h3>Persönliche Daten</h3>
+        <h3>{data[0].sectionTitle}</h3>
         <hr />
       </div>
       <div className="data-parent-container">
-        {data.map((dataElement) => {
+        {data.map((dataElement, index) => {
+          if (index === 0) return null;
           return (
             <Data
               meta={dataElement.meta}

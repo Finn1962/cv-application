@@ -5,6 +5,19 @@
   --color-section-heading: #686868;
 }
 
+/*Markiert ative Elemente*/
+.active::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
+  border: 1px dashed #049aff;
+  border-radius: 15px;
+  pointer-events: none;
+}
+
 .horizontal-alignment {
   display: flex;
   justify-content: center;
@@ -29,6 +42,16 @@
 .cv-content-container * {
   font-family: var(--cv-font);
   font-weight: 300;
+}
+
+header {
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease-in-out;
+}
+
+header:hover {
+  transform: scale(1.01);
 }
 
 .cv-header {
@@ -60,6 +83,13 @@
 
 section {
   margin: 75px 50px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease-in-out;
+}
+
+section:hover {
+  transform: scale(1.01);
 }
 
 section h3 {
