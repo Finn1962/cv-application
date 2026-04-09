@@ -1,30 +1,20 @@
 import { useState } from "react";
 import { produce } from "immer";
+
 import Header from "./CV/Header.jsx";
 import CvContainer from "./CV/ContentContainer.jsx";
 import Section from "./CV/Section.jsx";
 import EditorContainer from "./Editor/ContentContainer.jsx";
 import CloseButton from "./Editor/CloseButton.jsx";
+import AddButton from "./Editor/AddButton.jsx";
+import Switch from "./Editor/Switch.jsx";
 import SectionHeadingInput from "./Editor/SectionHeadingInput.jsx";
 import SectionDataInput from "./Editor/SectionDataInput.jsx";
 import HeaderNameInput from "./Editor/HeaderNameInput.jsx";
 import HeaderMetaInput from "./Editor/HeaderMetaInput.jsx";
+import ControlElementsContainer from "./Editor/ControlElementsContainer.jsx";
 
 export default function App() {
-  //Algorithmus zum Aktualisieren der Datenstruktur des Lebenslaufs
-  function updateCvStructure({ sectionKey, dataIndex, newData }) {
-    setCvStructure(
-      produce((draft) => {
-        const section = draft.find((section) => section.key === sectionKey);
-
-        if (section) {
-          const oldData = section.data[dataIndex];
-          section.data[dataIndex] = { ...oldData, ...newData };
-        }
-      }),
-    );
-  }
-
   //Übersetzung von Tag zu Komponente
   const componentMap = {
     header: Header,
@@ -39,7 +29,7 @@ export default function App() {
   const [cvStructure, setCvStructure] = useState([
     {
       tag: componentMap.header,
-      inputTyps: [
+      inputs: [
         { tag: componentMap.headerNameInput, key: crypto.randomUUID() },
         {
           tag: componentMap.headerMetaInput,
@@ -85,27 +75,16 @@ export default function App() {
     },
     {
       tag: componentMap.section,
-      inputTyps: [
+      inputs: [
         { tag: componentMap.sectionHeadingInput, key: crypto.randomUUID() },
         { tag: componentMap.sectionDataInput, key: crypto.randomUUID() },
-        { tag: componentMap.sectionDataInput, key: crypto.randomUUID() },
-        { tag: componentMap.sectionDataInput, key: crypto.randomUUID() },
-        { tag: componentMap.sectionDataInput, key: crypto.randomUUID() },
       ],
+      addableInputs: {
+        tag: componentMap.sectionDataInput,
+      },
       data: [
         { sectionTitle: "Persönliche Daten", key: crypto.randomUUID() },
         { meta: "Name", details: "Finn Schmidt", key: crypto.randomUUID() },
-        {
-          meta: "Geburtsdatum",
-          details: "01.06.2004",
-          key: crypto.randomUUID(),
-        },
-        {
-          meta: "Geburtsort",
-          details: "Braunschweig",
-          key: crypto.randomUUID(),
-        },
-        { meta: "Familienstand", details: "Ledig", key: crypto.randomUUID() },
       ],
       key: crypto.randomUUID(),
     },
@@ -118,7 +97,42 @@ export default function App() {
     (element) => element.key === selectedId,
   );
 
-  const activeInputs = selectedSection ? selectedSection.inputTyps : [];
+  const activeInputs = selectedSection ? selectedSection.inputs : [];
+
+  //Algorithmus zum Aktualisieren der Datenstruktur des Lebenslaufs
+  function updateCvStructure({ sectionKey, dataIndex, newData }) {
+    setCvStructure(
+      produce((draft) => {
+        const section = draft.find((section) => section.key === sectionKey);
+
+        if (section) {
+          const oldData = section.data[dataIndex];
+          section.data[dataIndex] = { ...oldData, ...newData };
+        }
+      }),
+    );
+  }
+
+  function addInput() {
+    const inputToAdd = selectedSection.addableInputs;
+    setCvStructure(
+      produce((draft) => {
+        const section = draft.find((section) => section.key === selectedId);
+        if (section && inputToAdd) {
+          const oldInputs = section.inputs;
+          section.inputs = [
+            ...oldInputs,
+            { ...inputToAdd, key: crypto.randomUUID() },
+          ];
+          section.data.push({
+            meta: "",
+            details: "",
+            key: crypto.randomUUID(),
+          });
+        }
+      }),
+    );
+  }
 
   //Rückgabe
   return (
@@ -126,7 +140,11 @@ export default function App() {
       <main>
         {activeInputs.length > 0 && (
           <EditorContainer>
-            <CloseButton onClick={() => setSelectedId(null)} />
+            <ControlElementsContainer>
+              <Switch />
+              <CloseButton onClick={() => setSelectedId(null)} />
+            </ControlElementsContainer>
+
             {activeInputs.map((input, index) => {
               const placeHolder = input.placeHolder || "";
               const Tag = input.tag;
@@ -145,6 +163,10 @@ export default function App() {
                 />
               );
             })}
+
+            {selectedSection.tag === componentMap.section && (
+              <AddButton onClick={addInput} />
+            )}
           </EditorContainer>
         )}
 

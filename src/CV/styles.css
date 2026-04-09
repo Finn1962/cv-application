@@ -5,7 +5,7 @@
   --color-section-heading: #686868;
 }
 
-/*Markiert ative Elemente*/
+/*Markiert aktive Elemente*/
 .active::before {
   content: "";
   position: absolute;
@@ -13,7 +13,7 @@
   left: -12px;
   right: -12px;
   bottom: -12px;
-  border: 1px dashed #049aff;
+  border: 2px dashed var(--main-color);
   border-radius: 15px;
   pointer-events: none;
 }
@@ -35,8 +35,8 @@
   height: auto;
   max-width: 1000px;
   min-height: 1414px;
-  -webkit-box-shadow: 0px 0px 12px 3px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 0px 12px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow-settings);
+  background-color: white;
 }
 
 .cv-content-container * {

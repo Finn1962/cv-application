@@ -24,8 +24,8 @@ export default function Section({ data, onClick, className }) {
 function Data({ meta, details }) {
   return (
     <div className="data-container">
-      <p>{meta}</p>
-      <p>{details}</p>
+      <p>{meta || "Tätigkeit oder Datum"}</p>
+      <p>{details || "Informationen"}</p>
     </div>
   );
 }

@@ -1,3 +1,9 @@
+:root {
+  --main-color: #009fe3;
+  --box-shadow-settings:
+    0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15);
+}
+
 html {
   font-size: 100%;
   font-family: "Roboto", sans-serif;
@@ -9,45 +15,6 @@ html * {
 
 :focus {
   outline-offset: 10px;
-}
-
-button {
-  background-color: transparent;
-  border: none;
-}
-
-input {
-  background: #f4f4f4;
-  border: none;
-  border-radius: 10px;
-  width: 100%;
-  padding: 10px;
-}
-
-input:focus {
-  outline-offset: 0px;
-  outline-color: black;
-}
-
-input::placeholder {
-  color: rgb(88, 88, 88);
-}
-
-textarea {
-  background: #f4f4f4;
-  border: none;
-  border-radius: 10px;
-  width: 100%;
-  padding: 10px;
-}
-
-textarea:focus {
-  outline-offset: 0px;
-  outline-color: black;
-}
-
-textarea::placeholder {
-  color: rgb(88, 88, 88);
 }
 
 .page-wrapper {
@@ -63,4 +30,15 @@ main {
   width: 100%;
   display: flex;
   justify-content: space-around;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  transition: transform 0.2s ease-in-out;
+  user-select: none;
+}
+
+button:hover {
+  transform: scale(1.2);
 }
