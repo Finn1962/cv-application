@@ -1,4 +1,4 @@
-export default function newSection(componentMap) {
+export default function section(componentMap) {
   return {
     tag: componentMap.section,
     inputs: [

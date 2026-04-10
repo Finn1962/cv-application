@@ -5,11 +5,11 @@ import SectionDataInput from "../Editor/SectionDataInput.jsx";
 import HeaderNameInput from "../Editor/HeaderNameInput.jsx";
 import HeaderMetaInput from "../Editor/HeaderMetaInput.jsx";
 
-import { useState } from "react";
-import { produce } from "immer";
-
 import newHeader from "../structurePresets/header.js";
 import newSection from "../structurePresets/section.js";
+
+import { useState } from "react";
+import { produce } from "immer";
 
 export function useCvStructure() {
   //Übersetzung der Komponenten
@@ -89,10 +89,24 @@ export function useCvStructure() {
     );
   }
 
+  //Fügt eine Sektion im CV hinzu
   function addSection() {
     setCvStructure(
       produce((draft) => {
         draft.push(newSection(componentMap));
+      }),
+    );
+  }
+
+  //Löscht eine Sektion im CV
+  function deleteSection(sectionKey) {
+    setCvStructure(
+      produce((draft) => {
+        const section = draft.find((section) => section.key === sectionKey);
+
+        if (!section) return;
+        const index = draft.indexOf(section);
+        draft.splice(index, 1);
       }),
     );
   }
@@ -106,7 +120,8 @@ export function useCvStructure() {
     setSelectedKey,
     updateData,
     addInput,
-    addSection,
     deleteInput,
+    addSection,
+    deleteSection,
   };
 }

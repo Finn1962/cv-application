@@ -18,8 +18,9 @@ export default function App() {
     setSelectedKey,
     updateData,
     addInput,
-    addSection,
     deleteInput,
+    addSection,
+    deleteSection,
   } = useCvStructure();
 
   return (
@@ -65,7 +66,9 @@ export default function App() {
               <Tag
                 className={section.key === selectedKey ? "active" : ""}
                 data={section.data}
-                sectionTitle={section.sectionTitle}
+                deleteSection={() => {
+                  deleteSection(section.key);
+                }}
                 key={section.key}
                 selectSection={() => setSelectedKey(section.key)}
               />

@@ -25,6 +25,12 @@
   flex-wrap: wrap;
 }
 
+.centrate-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .horizontal-grid {
   display: grid;
   grid-template-columns: max-content 1fr;
@@ -64,6 +70,7 @@ header:hover {
   height: auto;
   background-color: black;
   padding: 20px 10px 35px 10px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -87,7 +94,7 @@ header:hover {
 }
 
 section {
-  margin: 70px 50px 0 50px;
+  margin: 50px 50px 0 50px;
   cursor: pointer;
   position: relative;
   transition: transform 0.2s ease-in-out;
@@ -118,4 +125,26 @@ section .data-container {
   display: grid;
   grid-template-columns: 35% 1fr;
   margin: 20px 0;
+}
+
+/*Deletebuton Styles werden größtenteils von dem Editor button übernommen*/
+section .delete-button {
+  bottom: -90%;
+  right: -10px;
+}
+
+section.active .delete-button {
+  display: block;
+}
+
+section.active:has(.delete-button:hover):before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
+  border: 2px solid red;
+  border-radius: 15px;
+  pointer-events: none;
 }

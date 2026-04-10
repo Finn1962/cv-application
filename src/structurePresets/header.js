@@ -1,4 +1,4 @@
-export default function newHeader(componentMap) {
+export default function header(componentMap) {
   return {
     tag: componentMap.header,
     inputs: [
