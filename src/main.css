@@ -37,6 +37,11 @@ button {
   border: none;
   transition: transform 0.2s ease-in-out;
   user-select: none;
+  will-change: transform;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 button:hover {
