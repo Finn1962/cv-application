@@ -6,13 +6,17 @@ import CvContainer from "./CV/ContentContainer.jsx";
 import Section from "./CV/Section.jsx";
 import EditorContainer from "./Editor/ContentContainer.jsx";
 import CloseButton from "./Editor/CloseButton.jsx";
-import AddButton from "./Editor/AddButton.jsx";
+import InputAddButton from "./Editor/AddButton.jsx";
+import SectionAddButton from "./CV/AddButton.jsx";
 import Switch from "./Editor/Switch.jsx";
 import SectionHeadingInput from "./Editor/SectionHeadingInput.jsx";
 import SectionDataInput from "./Editor/SectionDataInput.jsx";
 import HeaderNameInput from "./Editor/HeaderNameInput.jsx";
 import HeaderMetaInput from "./Editor/HeaderMetaInput.jsx";
 import ControlElementsContainer from "./Editor/ControlElementsContainer.jsx";
+
+import newHeader from "./structurePresets/header.js";
+import newSection from "./structurePresets/section.js";
 
 export default function App() {
   //Übersetzung von Tag zu Komponente
@@ -25,69 +29,10 @@ export default function App() {
     headerMetaInput: HeaderMetaInput,
   };
 
-  //Struktur des Lebenslaufs, bestehend aus Komponenten, Daten und Keys
+  //Speichert die Struktur des Lebenslaufs
   const [cvStructure, setCvStructure] = useState([
-    {
-      tag: componentMap.header,
-      inputs: [
-        { tag: componentMap.headerNameInput, key: crypto.randomUUID() },
-        {
-          tag: componentMap.headerMetaInput,
-          placeHolder: "Straße",
-          key: crypto.randomUUID(),
-        },
-        {
-          tag: componentMap.headerMetaInput,
-          placeHolder: "Hausnummer",
-          key: crypto.randomUUID(),
-        },
-        {
-          tag: componentMap.headerMetaInput,
-          placeHolder: "PLZ",
-          key: crypto.randomUUID(),
-        },
-        {
-          tag: componentMap.headerMetaInput,
-          placeHolder: "Stadt",
-          key: crypto.randomUUID(),
-        },
-        {
-          tag: componentMap.headerMetaInput,
-          placeHolder: "Telefon",
-          key: crypto.randomUUID(),
-        },
-        {
-          tag: componentMap.headerMetaInput,
-          placeHolder: "E-Mail",
-          key: crypto.randomUUID(),
-        },
-      ],
-      data: [
-        { value: "Finn Schmidt", key: crypto.randomUUID() },
-        { value: "Maurerweg", key: crypto.randomUUID() },
-        { value: "24", key: crypto.randomUUID() },
-        { value: "38126", key: crypto.randomUUID() },
-        { value: "Braunschweig", key: crypto.randomUUID() },
-        { value: "0162/9794940", key: crypto.randomUUID() },
-        { value: "finn.arvid@outlook.de", key: crypto.randomUUID() },
-      ],
-      key: crypto.randomUUID(),
-    },
-    {
-      tag: componentMap.section,
-      inputs: [
-        { tag: componentMap.sectionHeadingInput, key: crypto.randomUUID() },
-        { tag: componentMap.sectionDataInput, key: crypto.randomUUID() },
-      ],
-      addableInputs: {
-        tag: componentMap.sectionDataInput,
-      },
-      data: [
-        { sectionTitle: "Persönliche Daten", key: crypto.randomUUID() },
-        { meta: "Name", details: "Finn Schmidt", key: crypto.randomUUID() },
-      ],
-      key: crypto.randomUUID(),
-    },
+    newHeader(componentMap),
+    newSection(componentMap),
   ]);
 
   //Speichert aktive Section, Key und zugehörige Inputs
@@ -105,10 +50,9 @@ export default function App() {
       produce((draft) => {
         const section = draft.find((section) => section.key === sectionKey);
 
-        if (section) {
-          const oldData = section.data[dataIndex];
-          section.data[dataIndex] = { ...oldData, ...newData };
-        }
+        if (!section) return;
+        const oldData = section.data[dataIndex];
+        section.data[dataIndex] = { ...oldData, ...newData };
       }),
     );
   }
@@ -119,18 +63,18 @@ export default function App() {
     setCvStructure(
       produce((draft) => {
         const section = draft.find((section) => section.key === selectedKey);
-        if (section && inputToAdd) {
-          const oldInputs = section.inputs;
-          section.inputs = [
-            ...oldInputs,
-            { ...inputToAdd, key: crypto.randomUUID() },
-          ];
-          section.data.push({
-            meta: "",
-            details: "",
-            key: crypto.randomUUID(),
-          });
-        }
+
+        if (!section || !inputToAdd) return;
+        const oldInputs = section.inputs;
+        section.inputs = [
+          ...oldInputs,
+          { ...inputToAdd, key: crypto.randomUUID() },
+        ];
+        section.data.push({
+          meta: "",
+          details: "",
+          key: crypto.randomUUID(),
+        });
       }),
     );
   }
@@ -140,12 +84,22 @@ export default function App() {
     setCvStructure(
       produce((draft) => {
         const section = draft.find((section) => section.key === selectedKey);
+
         if (!section) return;
         const input = section.inputs.find((input) => input.key === inputKey);
         const index = section.inputs.indexOf(input);
+
         if (index < 0) return;
         section.inputs.splice(index, 1);
         section.data.splice(index, 1);
+      }),
+    );
+  }
+
+  function addSection() {
+    setCvStructure(
+      produce((draft) => {
+        draft.push(newSection(componentMap));
       }),
     );
   }
@@ -182,7 +136,7 @@ export default function App() {
             })}
 
             {selectedSection.tag === componentMap.section && (
-              <AddButton onClick={addInput} />
+              <InputAddButton addInput={addInput} />
             )}
           </EditorContainer>
         )}
@@ -200,6 +154,7 @@ export default function App() {
               />
             );
           })}
+          <SectionAddButton addSection={addSection} />
         </CvContainer>
       </main>
     </div>

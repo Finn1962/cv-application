@@ -1,6 +1,6 @@
-export default function AddButton({ addInput }) {
+export default function AddButton({ addSection }) {
   return (
-    <button className="button" draggable="false" onClick={addInput}>
+    <button className="button" draggable="false" onClick={addSection}>
       <svg
         className="add-icon"
         width="40px"

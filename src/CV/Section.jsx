@@ -2,7 +2,7 @@ export default function Section({ data, selectSection, className }) {
   return (
     <section tabIndex="0" onClick={selectSection} className={className}>
       <div className="horizontal-grid">
-        <h3>{data[0].sectionTitle}</h3>
+        <h3>{data[0].sectionTitle || "Abschnittsüberschrift"}</h3>
         <hr />
       </div>
       <div className="data-parent-container">

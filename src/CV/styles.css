@@ -82,7 +82,7 @@ header:hover {
 }
 
 section {
-  margin: 75px 50px;
+  margin: 75px 50px 0 50px;
   cursor: pointer;
   position: relative;
   transition: transform 0.2s ease-in-out;
