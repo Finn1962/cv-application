@@ -90,17 +90,17 @@ export default function App() {
     },
   ]);
 
-  //Auswahl für aktive Abschnitte und zugehörige Inputs
-  const [selectedId, setSelectedId] = useState(null);
+  //Speichert aktive Section, Key und zugehörige Inputs
+  const [selectedKey, setSelectedKey] = useState(null);
 
   const selectedSection = cvStructure.find(
-    (element) => element.key === selectedId,
+    (element) => element.key === selectedKey,
   );
 
   const activeInputs = selectedSection ? selectedSection.inputs : [];
 
-  //Algorithmus zum Aktualisieren der Datenstruktur des Lebenslaufs
-  function updateCvStructure({ sectionKey, dataIndex, newData }) {
+  //Ändert die Daten in der cvStructure, wenn in einem Input etwas geändert wird
+  function updateData({ sectionKey, dataIndex, newData }) {
     setCvStructure(
       produce((draft) => {
         const section = draft.find((section) => section.key === sectionKey);
@@ -113,11 +113,12 @@ export default function App() {
     );
   }
 
+  //Fügt einen input und Datensatz zum ausgewählten Abschnitt hinzu
   function addInput() {
     const inputToAdd = selectedSection.addableInputs;
     setCvStructure(
       produce((draft) => {
-        const section = draft.find((section) => section.key === selectedId);
+        const section = draft.find((section) => section.key === selectedKey);
         if (section && inputToAdd) {
           const oldInputs = section.inputs;
           section.inputs = [
@@ -134,6 +135,21 @@ export default function App() {
     );
   }
 
+  //Löscht einen input und Datensatz aus dem ausgewählten Abschnitt
+  function deleteInput(inputKey) {
+    setCvStructure(
+      produce((draft) => {
+        const section = draft.find((section) => section.key === selectedKey);
+        if (!section) return;
+        const input = section.inputs.find((input) => input.key === inputKey);
+        const index = section.inputs.indexOf(input);
+        if (index < 0) return;
+        section.inputs.splice(index, 1);
+        section.data.splice(index, 1);
+      }),
+    );
+  }
+
   //Rückgabe
   return (
     <div className="page-wrapper">
@@ -142,7 +158,7 @@ export default function App() {
           <EditorContainer>
             <ControlElementsContainer>
               <Switch />
-              <CloseButton onClick={() => setSelectedId(null)} />
+              <CloseButton onClick={() => setSelectedKey(null)} />
             </ControlElementsContainer>
 
             {activeInputs.map((input, index) => {
@@ -152,8 +168,9 @@ export default function App() {
                 <Tag
                   key={input.key}
                   data={selectedSection.data[index]}
+                  deleteInput={() => deleteInput(input.key)}
                   updateData={(newData) =>
-                    updateCvStructure({
+                    updateData({
                       sectionKey: selectedSection.key,
                       dataIndex: index,
                       newData,
@@ -175,11 +192,11 @@ export default function App() {
             const Tag = section.tag;
             return (
               <Tag
-                className={section.key === selectedId ? "active" : ""}
+                className={section.key === selectedKey ? "active" : ""}
                 data={section.data}
                 sectionTitle={section.sectionTitle}
                 key={section.key}
-                onClick={() => setSelectedId(section.key)}
+                selectSection={() => setSelectedKey(section.key)}
               />
             );
           })}

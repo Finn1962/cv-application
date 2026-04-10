@@ -1,4 +1,4 @@
-export default function DataInput({ data, updateData }) {
+export default function DataInput({ data, updateData, deleteInput }) {
   return (
     <div className="data-input-container">
       <input
@@ -21,14 +21,18 @@ export default function DataInput({ data, updateData }) {
         placeholder="Informationen"
       />
 
-      <DeleteButton />
+      <DeleteButton deleteInput={deleteInput} />
     </div>
   );
 }
 
-function DeleteButton() {
+function DeleteButton({ deleteInput }) {
   return (
-    <button aria-label="Delete item" className="delete-button">
+    <button
+      aria-label="Delete item"
+      className="delete-button"
+      onClick={deleteInput}
+    >
       <svg
         className="trash-svg"
         width="25"

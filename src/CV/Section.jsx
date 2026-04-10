@@ -1,6 +1,6 @@
-export default function Section({ data, onClick, className }) {
+export default function Section({ data, selectSection, className }) {
   return (
-    <section tabIndex="0" onClick={onClick} className={className}>
+    <section tabIndex="0" onClick={selectSection} className={className}>
       <div className="horizontal-grid">
         <h3>{data[0].sectionTitle}</h3>
         <hr />

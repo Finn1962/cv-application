@@ -1,9 +1,9 @@
-export default function Header({ data, onClick, className }) {
+export default function Header({ data, selectSection, className }) {
   return (
     <header
       className={`cv-header ${className || ""}`}
       tabIndex="0"
-      onClick={onClick}
+      onClick={selectSection}
     >
       <h2>{data[0].value || "Max Mustermann"}</h2>
 
