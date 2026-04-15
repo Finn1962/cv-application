@@ -22,7 +22,9 @@ export default function Section({
           );
         })}
       </div>
-      <DeleteButton deleteSection={deleteSection} />
+      <div>
+        <DeleteButton deleteSection={deleteSection} />
+      </div>
     </section>
   );
 }

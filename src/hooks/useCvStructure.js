@@ -117,6 +117,7 @@ export function useCvStructure() {
     selectedKey,
     selectedSection,
     activeInputs,
+    setCvStructure,
     setSelectedKey,
     updateData,
     addInput,

@@ -1,5 +1,6 @@
 import CvContainer from "./CV/ContentContainer.jsx";
 import EditorContainer from "./Editor/ContentContainer.jsx";
+import SortableItemWrapper from "./CV/SortableItemWrapper.jsx";
 import CloseButton from "./Editor/CloseButton.jsx";
 import InputAddButton from "./Editor/AddButton.jsx";
 import SectionAddButton from "./CV/AddButton.jsx";
@@ -15,6 +16,7 @@ export default function App() {
     selectedKey,
     selectedSection,
     activeInputs,
+    setCvStructure,
     setSelectedKey,
     updateData,
     addInput,
@@ -59,20 +61,30 @@ export default function App() {
           </EditorContainer>
         )}
 
-        <CvContainer>
+        <CvContainer cvStructure={cvStructure} setCvStructure={setCvStructure}>
           {cvStructure.map((section) => {
             const Tag = section.tag;
-            return (
+
+            const content = (
               <Tag
                 className={section.key === selectedKey ? "active" : ""}
                 data={section.data}
                 deleteSection={() => {
                   deleteSection(section.key);
                 }}
-                key={section.key}
                 selectSection={() => setSelectedKey(section.key)}
               />
             );
+
+            if (section.tag === componentMap.section) {
+              return (
+                <SortableItemWrapper key={section.key} id={section.key}>
+                  {content}
+                </SortableItemWrapper>
+              );
+            } else {
+              return content;
+            }
           })}
           <SectionAddButton addSection={addSection} />
         </CvContainer>

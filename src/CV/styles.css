@@ -94,7 +94,7 @@ header:hover {
 }
 
 section {
-  margin: 50px 50px 0 50px;
+  margin: 50px 75px 0 75px;
   cursor: pointer;
   position: relative;
   transition: transform 0.2s ease-in-out;
@@ -129,8 +129,10 @@ section .data-container {
 
 /*Deletebuton Styles werden größtenteils von dem Editor button übernommen*/
 section .delete-button {
-  bottom: -90%;
-  right: -10px;
+  top: 80%;
+  right: -5px;
+  height: auto;
+  width: auto;
 }
 
 section.active .delete-button {
@@ -147,4 +149,23 @@ section.active:has(.delete-button:hover):before {
   border: 2px solid red;
   border-radius: 15px;
   pointer-events: none;
+}
+
+/*Draghandle Styles*/
+.drag-handle {
+  cursor: grab;
+  width: 8px;
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  display: none;
+}
+
+.drag-handle:hover {
+  transform: scale(2);
+}
+
+.sortable-item-wrapper:has(section.active) .drag-handle {
+  display: block;
+  animation: popInBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
 }
