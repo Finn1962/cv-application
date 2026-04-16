@@ -8,7 +8,13 @@ export default function CloseButton({ onClick }) {
       aria-label="Schließt das Fenster zum editieren"
       onClick={onClick}
     >
-      <img src={closeIcon} draggable="false" aria-hidden="true" width="25px" />
+      <img
+        src={closeIcon}
+        draggable="false"
+        aria-hidden="true"
+        width="25px"
+        className="close-icon"
+      />
     </button>
   );
 }

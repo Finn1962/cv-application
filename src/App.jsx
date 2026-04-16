@@ -6,8 +6,11 @@ import InputAddButton from "./Editor/AddButton.jsx";
 import SectionAddButton from "./CV/AddButton.jsx";
 import Switch from "./Editor/Switch.jsx";
 import ControlElementsContainer from "./Editor/ControlElementsContainer.jsx";
+import Header from "./Header.jsx";
+import CvSizeRegulator from "./CvSizeRegultor.jsx";
 
 import { useCvStructure } from "./hooks/useCvStructure.js";
+import { useScrollDirection } from "./hooks/useScrollDirection.js";
 
 export default function App() {
   const {
@@ -25,70 +28,81 @@ export default function App() {
     deleteSection,
   } = useCvStructure();
 
-  return (
-    <div className="page-wrapper">
-      <main>
-        {activeInputs.length > 0 && (
-          <EditorContainer>
-            <ControlElementsContainer>
-              <Switch />
-              <CloseButton onClick={() => setSelectedKey(null)} />
-            </ControlElementsContainer>
+  const lastScrollDirection = useScrollDirection();
 
-            {activeInputs.map((input, index) => {
-              const placeHolder = input.placeHolder || "";
-              const Tag = input.tag;
-              return (
+  return (
+    <>
+      <Header lastScrollDirection={lastScrollDirection} />∂
+      <div className="page-wrapper">
+        <main>
+          {activeInputs.length > 0 && (
+            <EditorContainer>
+              <ControlElementsContainer>
+                <Switch />
+                <CloseButton onClick={() => setSelectedKey(null)} />
+              </ControlElementsContainer>
+
+              {activeInputs.map((input, index) => {
+                const placeHolder = input.placeHolder || "";
+                const Tag = input.tag;
+                return (
+                  <Tag
+                    key={input.key}
+                    data={selectedSection.data[index]}
+                    deleteInput={() => deleteInput(input.key)}
+                    updateData={(newData) =>
+                      updateData({
+                        sectionKey: selectedSection.key,
+                        dataIndex: index,
+                        newData,
+                      })
+                    }
+                    placeHolder={placeHolder}
+                  />
+                );
+              })}
+
+              {selectedSection.tag === componentMap.section && (
+                <InputAddButton addInput={addInput} />
+              )}
+            </EditorContainer>
+          )}
+
+          <CvContainer
+            cvStructure={cvStructure}
+            setCvStructure={setCvStructure}
+          >
+            {cvStructure.map((section) => {
+              const Tag = section.tag;
+
+              const content = (
                 <Tag
-                  key={input.key}
-                  data={selectedSection.data[index]}
-                  deleteInput={() => deleteInput(input.key)}
-                  updateData={(newData) =>
-                    updateData({
-                      sectionKey: selectedSection.key,
-                      dataIndex: index,
-                      newData,
-                    })
-                  }
-                  placeHolder={placeHolder}
+                  className={section.key === selectedKey ? "active" : ""}
+                  key={section.key}
+                  data={section.data}
+                  deleteSection={() => {
+                    deleteSection(section.key);
+                  }}
+                  selectSection={() => setSelectedKey(section.key)}
                 />
               );
+
+              if (section.tag === componentMap.section) {
+                return (
+                  <SortableItemWrapper key={section.key} id={section.key}>
+                    {content}
+                  </SortableItemWrapper>
+                );
+              } else {
+                return content;
+              }
             })}
+            <SectionAddButton addSection={addSection} />
+          </CvContainer>
 
-            {selectedSection.tag === componentMap.section && (
-              <InputAddButton addInput={addInput} />
-            )}
-          </EditorContainer>
-        )}
-
-        <CvContainer cvStructure={cvStructure} setCvStructure={setCvStructure}>
-          {cvStructure.map((section) => {
-            const Tag = section.tag;
-
-            const content = (
-              <Tag
-                className={section.key === selectedKey ? "active" : ""}
-                data={section.data}
-                deleteSection={() => {
-                  deleteSection(section.key);
-                }}
-                selectSection={() => setSelectedKey(section.key)}
-              />
-            );
-
-            if (section.tag === componentMap.section) {
-              return (
-                <SortableItemWrapper key={section.key} id={section.key}>
-                  {content}
-                </SortableItemWrapper>
-              );
-            } else {
-              return content;
-            }
-          })}
-          <SectionAddButton addSection={addSection} />
-        </CvContainer>
-      </main>
-    </div>
+          <CvSizeRegulator />
+        </main>
+      </div>
+    </>
   );
 }

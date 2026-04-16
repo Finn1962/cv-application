@@ -1,8 +1,11 @@
 :root {
   --cv-font: "Inter", sans-serif;
-  --font-size: 16px;
   --heading-size: 40px;
   --color-section-heading: #686868;
+  --margin-sides: 75px;
+  --heading-size: 40px;
+  --font-size: 16px;
+  --cv-width: 1000px;
 }
 
 /*Markiert aktive Elemente*/
@@ -31,16 +34,11 @@
   align-items: center;
 }
 
-.horizontal-grid {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-}
-
 .cv-content-container {
   width: 100%;
   height: auto;
-  max-width: 1000px;
-  min-height: 1414px;
+  max-width: var(--cv-width);
+  min-height: calc(var(--cv-width) * 1.414);
   box-shadow: var(--box-shadow-settings);
   background-color: white;
   display: grid;
@@ -55,13 +53,13 @@
   font-weight: 300;
 }
 
-header {
+.cv-header {
   cursor: pointer;
   position: relative;
   transition: transform 0.2s ease-in-out;
 }
 
-header:hover {
+.cv-header:hover {
   transform: scale(1.01);
 }
 
@@ -94,7 +92,7 @@ header:hover {
 }
 
 section {
-  margin: 50px 75px 0 75px;
+  margin: 50px var(--margin-sides) 0 var(--margin-sides);
   cursor: pointer;
   position: relative;
   transition: transform 0.2s ease-in-out;
@@ -113,8 +111,14 @@ section hr {
   border: none;
   background-color: var(--color-section-heading);
   height: 2px;
-  transform: translateY(12px);
   margin-left: 30px;
+  position: relative;
+  top: 50%;
+}
+
+.horizontal-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
 }
 
 section .data-parent-container {
@@ -125,6 +129,14 @@ section .data-container {
   display: grid;
   grid-template-columns: 35% 1fr;
   margin: 20px 0;
+}
+
+section .data-container p {
+  font-size: var(--font-size);
+}
+
+section .data-container hr {
+  font-size: var(--font-size);
 }
 
 /*Deletebuton Styles werden größtenteils von dem Editor button übernommen*/
