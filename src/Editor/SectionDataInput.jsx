@@ -35,7 +35,7 @@ function DeleteButton({ deleteInput }) {
     >
       <svg
         className="trash-svg"
-        width="25"
+        width="23"
         viewBox="0 -10 64 74"
         xmlns="http://www.w3.org/2000/svg"
       >

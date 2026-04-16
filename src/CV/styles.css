@@ -129,10 +129,8 @@ section .data-container {
 
 /*Deletebuton Styles werden größtenteils von dem Editor button übernommen*/
 section .delete-button {
-  top: 80%;
-  right: -5px;
-  height: auto;
-  width: auto;
+  position: relative;
+  top: -2px;
 }
 
 section.active .delete-button {
@@ -159,10 +157,6 @@ section.active:has(.delete-button:hover):before {
   top: 50%;
   left: 30px;
   display: none;
-}
-
-.drag-handle:hover {
-  transform: scale(2);
 }
 
 .sortable-item-wrapper:has(section.active) .drag-handle {

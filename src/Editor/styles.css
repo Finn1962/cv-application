@@ -166,9 +166,8 @@
 
 .delete-button {
   position: absolute;
-  top: 0;
-  right: 0;
-  padding: 0.5em;
+  top: 9px;
+  right: 3px;
   border: none;
   background: transparent;
   cursor: pointer;

@@ -18,22 +18,25 @@ export default function Section({
               meta={dataElement.meta}
               details={dataElement.details}
               key={dataElement.key}
+              isLastElement={index === data.length - 1 ? true : false}
+              deleteSection={deleteSection}
             />
           );
         })}
-      </div>
-      <div>
-        <DeleteButton deleteSection={deleteSection} />
       </div>
     </section>
   );
 }
 
-function Data({ meta, details }) {
+function Data({ meta, details, isLastElement, deleteSection }) {
   return (
-    <div className="data-container">
+    <div
+      className="data-container"
+      style={isLastElement ? { gridTemplateColumns: "35% 1fr 35px" } : {}}
+    >
       <p>{meta || "Tätigkeit oder Datum"}</p>
       <p>{details || "Informationen"}</p>
+      {isLastElement && <DeleteButton deleteSection={deleteSection} />}
     </div>
   );
 }
