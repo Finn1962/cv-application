@@ -4,14 +4,17 @@ import SectionHeadingInput from "../Editor/SectionHeadingInput.jsx";
 import SectionDataInput from "../Editor/SectionDataInput.jsx";
 import HeaderNameInput from "../Editor/HeaderNameInput.jsx";
 import HeaderMetaInput from "../Editor/HeaderMetaInput.jsx";
+import ColorInput from "../Editor/ColorInput.jsx";
+import SwitchInput from "../Editor/SwichInput.jsx";
 
-import newHeader from "../structurePresets/header.js";
-import newSection from "../structurePresets/section.js";
+import newHeader from "../structurePresets/headerPreset.js";
+import newSection from "../structurePresets/sectionPreset.js";
+import designSettings from "../structurePresets/designSettings.js";
 
 import { useState } from "react";
 import { produce } from "immer";
 
-export function useCvStructure() {
+export function useCvData() {
   //Übersetzung der Komponenten
   const componentMap = {
     header: Header,
@@ -20,18 +23,20 @@ export function useCvStructure() {
     sectionDataInput: SectionDataInput,
     headerNameInput: HeaderNameInput,
     headerMetaInput: HeaderMetaInput,
+    colorInput: ColorInput,
+    switchInput: SwitchInput,
   };
 
   //Speichert die Struktur des Lebenslaufs
-  const [cvStructure, setCvStructure] = useState([
-    newHeader(componentMap),
-    newSection(componentMap),
-  ]);
+  const [cvData, setCvData] = useState({
+    build: [newHeader(componentMap), newSection(componentMap)],
+    setting: designSettings(componentMap),
+  });
 
   //Speichert aktive Section, Key und zugehörige Inputs
   const [selectedKey, setSelectedKey] = useState(null);
 
-  const selectedSection = cvStructure.find(
+  const selectedSection = cvData.build.find(
     (element) => element.key === selectedKey,
   );
 
@@ -39,9 +44,11 @@ export function useCvStructure() {
 
   //Ändert die Daten in der cvStructure, wenn in einem Input etwas geändert wird
   function updateData({ sectionKey, dataIndex, newData }) {
-    setCvStructure(
+    setCvData(
       produce((draft) => {
-        const section = draft.find((section) => section.key === sectionKey);
+        const section = draft.build.find(
+          (section) => section.key === sectionKey,
+        );
 
         if (!section) return;
         const oldData = section.data[dataIndex];
@@ -53,9 +60,11 @@ export function useCvStructure() {
   //Fügt einen input und Datensatz zum ausgewählten Abschnitt hinzu
   function addInput() {
     const inputToAdd = selectedSection.addableInputs;
-    setCvStructure(
+    setCvData(
       produce((draft) => {
-        const section = draft.find((section) => section.key === selectedKey);
+        const section = draft.build.find(
+          (section) => section.key === selectedKey,
+        );
 
         if (!section || !inputToAdd) return;
         const oldInputs = section.inputs;
@@ -74,9 +83,11 @@ export function useCvStructure() {
 
   //Löscht einen input und Datensatz aus dem ausgewählten Abschnitt
   function deleteInput(inputKey) {
-    setCvStructure(
+    setCvData(
       produce((draft) => {
-        const section = draft.find((section) => section.key === selectedKey);
+        const section = draft.build.find(
+          (section) => section.key === selectedKey,
+        );
 
         if (!section) return;
         const input = section.inputs.find((input) => input.key === inputKey);
@@ -91,33 +102,35 @@ export function useCvStructure() {
 
   //Fügt eine Sektion im CV hinzu
   function addSection() {
-    setCvStructure(
+    setCvData(
       produce((draft) => {
-        draft.push(newSection(componentMap));
+        draft.build.push(newSection(componentMap));
       }),
     );
   }
 
   //Löscht eine Sektion im CV
   function deleteSection(sectionKey) {
-    setCvStructure(
+    setCvData(
       produce((draft) => {
-        const section = draft.find((section) => section.key === sectionKey);
+        const section = draft.build.find(
+          (section) => section.key === sectionKey,
+        );
 
         if (!section) return;
-        const index = draft.indexOf(section);
-        draft.splice(index, 1);
+        const index = draft.build.indexOf(section);
+        draft.build.splice(index, 1);
       }),
     );
   }
 
   return {
     componentMap,
-    cvStructure,
+    cvData,
     selectedKey,
     selectedSection,
     activeInputs,
-    setCvStructure,
+    setCvData,
     setSelectedKey,
     updateData,
     addInput,

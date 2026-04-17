@@ -1,4 +1,4 @@
-export default function section(componentMap) {
+export default function sectionPreset(componentMap) {
   return {
     tag: componentMap.section,
     inputs: [

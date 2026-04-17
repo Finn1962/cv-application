@@ -1,3 +1,5 @@
+import { produce } from "immer";
+
 import {
   DndContext,
   closestCenter,
@@ -11,11 +13,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-export default function ContentContainer({
-  children,
-  cvStructure,
-  setCvStructure,
-}) {
+export default function ContentContainer({ children, cvBuild, setCvData }) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 8 },
@@ -26,15 +24,17 @@ export default function ContentContainer({
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      const oldIndex = cvStructure.findIndex(
+      const oldIndex = cvBuild.findIndex(
         (section) => section.key === active.id,
       );
-      const newIndex = cvStructure.findIndex(
-        (section) => section.key === over.id,
-      );
+      const newIndex = cvBuild.findIndex((section) => section.key === over.id);
 
-      const newOrder = arrayMove(cvStructure, oldIndex, newIndex);
-      setCvStructure(newOrder);
+      const newOrder = arrayMove(cvBuild, oldIndex, newIndex);
+      setCvData(
+        produce((draft) => {
+          draft.build = newOrder;
+        }),
+      );
     }
   }
 
@@ -45,7 +45,7 @@ export default function ContentContainer({
       onDragEnd={handleDragEnd}
     >
       <SortableContext
-        items={cvStructure.map((section) => section.key)}
+        items={cvBuild.map((section) => section.key)}
         strategy={verticalListSortingStrategy}
       >
         <div className="cv-content-container">{children}</div>

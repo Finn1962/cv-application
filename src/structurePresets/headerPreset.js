@@ -1,4 +1,4 @@
-export default function header(componentMap) {
+export default function headerPreset(componentMap) {
   return {
     tag: componentMap.header,
     inputs: [

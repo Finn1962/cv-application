@@ -31,7 +31,8 @@ main {
   max-width: var(--page-width);
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap: 20px;
 }
 
 button {
@@ -59,11 +60,13 @@ button:hover {
 .size-regulator-container .plus-icon {
   max-width: none;
   margin-bottom: 15px;
+  transition: stroke 0.3s ease;
 }
 
 .size-regulator-container .minus-icon {
   transform-origin: center;
   max-width: none;
+  transition: stroke 0.3s ease;
 }
 
 .size-regulator-container .plus-icon:hover .cls-1,

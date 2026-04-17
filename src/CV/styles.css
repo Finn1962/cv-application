@@ -1,11 +1,11 @@
 :root {
   --cv-font: "Inter", sans-serif;
-  --heading-size: 40px;
+  --heading-size: 32px;
   --color-section-heading: #686868;
-  --margin-sides: 75px;
-  --heading-size: 40px;
-  --font-size: 16px;
-  --cv-width: 1000px;
+  --margin-sides: 60px;
+  --heading-size: 32px;
+  --font-size: 12.8px;
+  --cv-width: 800px;
 }
 
 /*Markiert aktive Elemente*/
@@ -92,7 +92,7 @@
 }
 
 section {
-  margin: 50px var(--margin-sides) 0 var(--margin-sides);
+  margin: 35px var(--margin-sides) 0 var(--margin-sides);
   cursor: pointer;
   position: relative;
   transition: transform 0.2s ease-in-out;

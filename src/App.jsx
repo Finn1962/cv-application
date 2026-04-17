@@ -7,32 +7,31 @@ import SectionAddButton from "./CV/AddButton.jsx";
 import Switch from "./Editor/Switch.jsx";
 import ControlElementsContainer from "./Editor/ControlElementsContainer.jsx";
 import Header from "./Header.jsx";
-import CvSizeRegulator from "./CvSizeRegultor.jsx";
 
-import { useCvStructure } from "./hooks/useCvStructure.js";
+import { useCvData } from "./hooks/useCvData.js";
 import { useScrollDirection } from "./hooks/useScrollDirection.js";
 
 export default function App() {
   const {
     componentMap,
-    cvStructure,
+    cvData,
     selectedKey,
     selectedSection,
     activeInputs,
-    setCvStructure,
+    setCvData,
     setSelectedKey,
     updateData,
     addInput,
     deleteInput,
     addSection,
     deleteSection,
-  } = useCvStructure();
+  } = useCvData();
 
   const lastScrollDirection = useScrollDirection();
 
   return (
     <>
-      <Header lastScrollDirection={lastScrollDirection} />∂
+      <Header lastScrollDirection={lastScrollDirection} />
       <div className="page-wrapper">
         <main>
           {activeInputs.length > 0 && (
@@ -42,6 +41,7 @@ export default function App() {
                 <CloseButton onClick={() => setSelectedKey(null)} />
               </ControlElementsContainer>
 
+              {}
               {activeInputs.map((input, index) => {
                 const placeHolder = input.placeHolder || "";
                 const Tag = input.tag;
@@ -68,11 +68,8 @@ export default function App() {
             </EditorContainer>
           )}
 
-          <CvContainer
-            cvStructure={cvStructure}
-            setCvStructure={setCvStructure}
-          >
-            {cvStructure.map((section) => {
+          <CvContainer cvBuild={cvData.build} setCvData={setCvData}>
+            {cvData.build.map((section) => {
               const Tag = section.tag;
 
               const content = (
@@ -99,8 +96,6 @@ export default function App() {
             })}
             <SectionAddButton addSection={addSection} />
           </CvContainer>
-
-          <CvSizeRegulator />
         </main>
       </div>
     </>
