@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import CvContainer from "./CV/ContentContainer.jsx";
 import EditorContainer from "./Editor/ContentContainer.jsx";
 import SortableItemWrapper from "./CV/SortableItemWrapper.jsx";
@@ -25,9 +27,14 @@ export default function App() {
     deleteInput,
     addSection,
     deleteSection,
+    updateSettingsData,
   } = useCvData();
 
   const lastScrollDirection = useScrollDirection();
+
+  const [showInputSettings, setShowInputSettings] = useState(true);
+  const [showDesignSettings, setShowDesignSettings] =
+    useState(!showInputSettings);
 
   return (
     <>
@@ -37,34 +44,56 @@ export default function App() {
           {activeInputs.length > 0 && (
             <EditorContainer>
               <ControlElementsContainer>
-                <Switch />
+                <Switch
+                  setShowInputSettings={setShowInputSettings}
+                  setShowDesignSettings={setShowDesignSettings}
+                />
                 <CloseButton onClick={() => setSelectedKey(null)} />
               </ControlElementsContainer>
 
-              {}
-              {activeInputs.map((input, index) => {
-                const placeHolder = input.placeHolder || "";
-                const Tag = input.tag;
-                return (
-                  <Tag
-                    key={input.key}
-                    data={selectedSection.data[index]}
-                    deleteInput={() => deleteInput(input.key)}
-                    updateData={(newData) =>
-                      updateData({
-                        sectionKey: selectedSection.key,
-                        dataIndex: index,
-                        newData,
-                      })
-                    }
-                    placeHolder={placeHolder}
-                  />
-                );
-              })}
+              {showInputSettings &&
+                activeInputs.map((input, index) => {
+                  const placeHolder = input.placeHolder || "";
+                  const Tag = input.tag;
+                  return (
+                    <Tag
+                      key={input.key}
+                      data={selectedSection.data[index]}
+                      deleteInput={() => deleteInput(input.key)}
+                      updateData={(newData) =>
+                        updateData({
+                          sectionKey: selectedSection.key,
+                          dataIndex: index,
+                          newData,
+                        })
+                      }
+                      placeHolder={placeHolder}
+                    />
+                  );
+                })}
 
-              {selectedSection.tag === componentMap.section && (
-                <InputAddButton addInput={addInput} />
-              )}
+              {showInputSettings &&
+                selectedSection.tag === componentMap.section && (
+                  <InputAddButton addInput={addInput} />
+                )}
+
+              {showDesignSettings &&
+                cvData.settings.map((setting) => {
+                  const Tag = setting.tag;
+                  return (
+                    <Tag
+                      label={setting.label}
+                      value={setting.value}
+                      updateData={(newValue) => {
+                        updateSettingsData({
+                          settingKey: setting.key,
+                          newValue,
+                        });
+                      }}
+                      key={setting.key}
+                    />
+                  );
+                })}
             </EditorContainer>
           )}
 

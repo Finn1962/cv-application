@@ -3,7 +3,11 @@
   --main-color: #54c0eb;
   --box-shadow-settings:
     0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15);
-  --page-width: 1600px;
+  --page-width: 1300px;
+}
+
+body {
+  background-color: rgb(243, 243, 243);
 }
 
 html {
@@ -44,34 +48,6 @@ button {
 
 button:hover {
   transform: scale(1.2);
-}
-
-.size-regulator-container {
-  height: min-content;
-  box-shadow: var(--box-shadow-settings);
-  border-radius: var(--border-radius);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 10px 10px 5px 10px;
-}
-
-.size-regulator-container .plus-icon {
-  max-width: none;
-  margin-bottom: 15px;
-  transition: stroke 0.3s ease;
-}
-
-.size-regulator-container .minus-icon {
-  transform-origin: center;
-  max-width: none;
-  transition: stroke 0.3s ease;
-}
-
-.size-regulator-container .plus-icon:hover .cls-1,
-.size-regulator-container .minus-icon:hover .st0 {
-  stroke: #000000;
 }
 
 .document-header {

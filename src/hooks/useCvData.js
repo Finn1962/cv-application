@@ -5,7 +5,8 @@ import SectionDataInput from "../Editor/SectionDataInput.jsx";
 import HeaderNameInput from "../Editor/HeaderNameInput.jsx";
 import HeaderMetaInput from "../Editor/HeaderMetaInput.jsx";
 import ColorInput from "../Editor/ColorInput.jsx";
-import SwitchInput from "../Editor/SwichInput.jsx";
+import CheckBoxInput from "../Editor/Checkbox.jsx";
+import FontInput from "../Editor/FontInput.jsx";
 
 import newHeader from "../structurePresets/headerPreset.js";
 import newSection from "../structurePresets/sectionPreset.js";
@@ -24,13 +25,14 @@ export function useCvData() {
     headerNameInput: HeaderNameInput,
     headerMetaInput: HeaderMetaInput,
     colorInput: ColorInput,
-    switchInput: SwitchInput,
+    checkboxInput: CheckBoxInput,
+    fontInput: FontInput,
   };
 
-  //Speichert die Struktur des Lebenslaufs
+  //Speichert die Struktur und Einstellungen des Lebenslaufs
   const [cvData, setCvData] = useState({
     build: [newHeader(componentMap), newSection(componentMap)],
-    setting: designSettings(componentMap),
+    settings: designSettings(componentMap),
   });
 
   //Speichert aktive Section, Key und zugehörige Inputs
@@ -43,7 +45,7 @@ export function useCvData() {
   const activeInputs = selectedSection ? selectedSection.inputs : [];
 
   //Ändert die Daten in der cvStructure, wenn in einem Input etwas geändert wird
-  function updateData({ sectionKey, dataIndex, newData }) {
+  function updateSectionData({ sectionKey, dataIndex, newData }) {
     setCvData(
       produce((draft) => {
         const section = draft.build.find(
@@ -53,6 +55,19 @@ export function useCvData() {
         if (!section) return;
         const oldData = section.data[dataIndex];
         section.data[dataIndex] = { ...oldData, ...newData };
+      }),
+    );
+  }
+
+  function updateSettingsData({ settingKey, newValue }) {
+    setCvData(
+      produce((draft) => {
+        const setting = draft.settings.find(
+          (setting) => setting.key === settingKey,
+        );
+        if (setting) {
+          setting.value = newValue;
+        }
       }),
     );
   }
@@ -132,10 +147,11 @@ export function useCvData() {
     activeInputs,
     setCvData,
     setSelectedKey,
-    updateData,
+    updateData: updateSectionData,
     addInput,
     deleteInput,
     addSection,
     deleteSection,
+    updateSettingsData,
   };
 }
